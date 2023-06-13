@@ -1,4 +1,3 @@
-
 "use strict";
 
 const productDropdown = document.getElementById("productDropdown");
@@ -16,6 +15,7 @@ window.onload = function () {
 };
 
 function productDropdownChange() {
+  console.log("inside of productDropdown...");
   if (productDropdown.value === "category") {
     showCategoryDropdown();
     hideAllProductsDropdown();
@@ -29,39 +29,36 @@ function productDropdownChange() {
 }
 
 function categoryDropdownSelected() {
-    let element = document.getElementById("categoryDropdown");
-    fetch("http://localhost:8081/api/categories")
-      .then((response) => response.json())
-      .then((data) => {
-        for (let i = 0; i < data.length; i++) {
-          let opt = document.createElement("option");
-          opt.textContent = data[i].name; // Access the correct property here
-          opt.value = data[i].id; 
-          element.appendChild(opt);
-        }
-      });
-  }
-  
+  let initialOption = new Option(""); 
+  categoryDropdown.appendChild(initialOption); 
 
-  function allDropdownChange() {
-    let element = document.getElementById("allDropdown");
-    fetch("http://localhost:8081/api/products")
-      .then((response) => response.json())
-      .then((data) => {
-        for (let i = 0; i < data.length; i++) {
-          let opt = document.createElement("option"); 
-          opt.textContent = data[i].productName;
-          opt.value = data[i].productName;
-          element.appendChild(opt);
-        }
-      });
-  }
-  
+  console.log("inside of dropdown...")
+  fetch("http://localhost:8081/api/categories")
+    .then((response) => response.json())
+    .then((categories) => {
+      for (let category of categories) {
+        let opt = document.createElement("option");
+        opt.textContent = category.name;
+        opt.value = category.categoryId; 
+        categoryDropdown.appendChild(opt);
+      }
+    });
+}
 
-  function allDropdownSelected(){
-    let element = document.getElementById()
-  }
-  
+function allDropdownChange() {
+  allDropdown.innerHTML = ""; 
+  console.log("inside of dropdown..")
+  fetch("http://localhost:8081/api/products")
+    .then((response) => response.json())
+    .then((products) => {
+      for (let product of products) {
+        let opt = document.createElement("option"); 
+        opt.textContent = product.productName;
+        opt.value = product.productId;
+        allDropdown.appendChild(opt);
+      }
+    });
+}
 
 function hideCategoryDropdown() {
   categoryDropdown.style.display = "none";
@@ -78,3 +75,4 @@ function hideAllProductsDropdown() {
 function showAllProductsDropdown() {
   allDropdown.style.display = "block";
 }
+
