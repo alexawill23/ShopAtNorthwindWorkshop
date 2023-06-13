@@ -9,6 +9,7 @@ window.onload = function () {
   console.log("window has loaded...");
   productDropdown.onchange = productDropdownChange;
   categoryDropdown.onchange = categoryDropdownSelected;
+  allDropdown.onchange = allDropdownChange; 
 
   hideCategoryDropdown();
   hideAllProductsDropdown();
@@ -33,12 +34,32 @@ function categoryDropdownSelected() {
       .then((response) => response.json())
       .then((data) => {
         for (let i = 0; i < data.length; i++) {
-          let category = document.createElement("option");
-          category.textContent = data[i].name;
-          category.value = data[i].name;
-          element.appendChild(category);
+          let opt = document.createElement("option");
+          opt.textContent = data[i].name; // Access the correct property here
+          opt.value = data[i].id; 
+          element.appendChild(opt);
         }
       });
+  }
+  
+
+  function allDropdownChange() {
+    let element = document.getElementById("allDropdown");
+    fetch("http://localhost:8081/api/products")
+      .then((response) => response.json())
+      .then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          let opt = document.createElement("option"); 
+          opt.textContent = data[i].productName;
+          opt.value = data[i].productName;
+          element.appendChild(opt);
+        }
+      });
+  }
+  
+
+  function allDropdownSelected(){
+    let element = document.getElementById()
   }
   
 
